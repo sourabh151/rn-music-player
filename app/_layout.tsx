@@ -1,5 +1,14 @@
-import { Stack } from "expo-router";
+import { Tabs } from "expo-router";
 
 export default function RootLayout() {
-  return <Stack />;
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen name="index" options={{ title: 'Home' }} />
+      <Tabs.Screen name="reanimated-examples" options={{ title: 'Reanimated' }} />
+    </Tabs>
+  );
 }

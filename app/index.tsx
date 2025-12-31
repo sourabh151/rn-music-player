@@ -1,58 +1,71 @@
-import { View, Button, Text } from "react-native";
-import Animated, { useSharedValue, withSpring, useAnimatedProps, withTiming } from "react-native-reanimated"
-import Svg, { Circle } from "react-native-svg"
-const AnimatedCircle = Animated.createAnimatedComponent(Circle)
+import { View, StyleSheet } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming, Easing } from 'react-native-reanimated'
 
-export default function Index() {
-  const radius = useSharedValue(10)
-  const AnimatedProps = useAnimatedProps(() => {
-    return {
-      r: withTiming(radius.value)
-    }
-  })
-  const handleClick = () => {
-    radius.value = withSpring(radius.value + 50)
-  }
-  const handleReset = () => {
-    radius.value = withSpring(50)
-  }
+const Index = () => {
+  const a = new Array(5).fill(null)
+  const deg = useSharedValue(-10)
+  // const anim = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [
+  //       { rotateZ: `${(deg.value)}deg` }
+  //     ],
+  //   }
+  // })
+  // const degree = interpolate(deg.value, [0, 1], [-10, 30])
   return (
-    <>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {/* <Animated.View */}
-        {/*   style={ */}
-        {/*     { */}
-        {/*       width: 100, */}
-        {/*       height: 100, */}
-        {/*       position: "absolute", */}
-        {/*       top: 0, */}
-        {/*       left: 0, */}
-        {/*       backgroundColor: "red", */}
-        {/*       transform: [{ translateX: width }] */}
-        {/*     } */}
-        {/*   }> */}
-        {/**/}
-        {/* </Animated.View> */}
-        <Svg>
-          <AnimatedCircle cx="50" cy="50" animatedProps={AnimatedProps} fill="blue" />
-        </Svg>
-      </View>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button onPress={handleClick} title="Click Me" />
-        <Button onPress={handleReset} title="Reset" />
-      </View>
-    </>
-  );
+    <View style={[styles.main]}>
+      {
+        a.map((_, i) => {
+          return <Animated.View key={i} style={
+            [
+              styles.card,
+              {
+                zIndex: a.length - i,
+                transform: [
+                  { rotateZ: `${(deg.value * i)}deg` }
+                ],
+              }
+            ]
+          }
+            onTouchStart={() => {
+              // setDegree(-20)
+              deg.value = withTiming(30, {
+                duration: 500,
+                easing: Easing.in(Easing.ease)
+              })
+
+            }}
+            onTouchEnd={() => {
+              // setDegree(-10)
+              deg.value = withTiming(-10, {
+                duration: 500,
+                easing: Easing.in(Easing.ease)
+              })
+            }}
+
+          />
+        })
+      }
+    </View>
+  )
 }
+const styles = StyleSheet.create({
+  main: {
+    backgroundColor: "#888888",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%"
+  },
+  card: {
+    backgroundColor: "#ffaeae",
+    height: 150,
+    aspectRatio: "3/4",
+    borderRadius: 5,
+    position: 'absolute',
+    elevation: 3,
+    borderWidth: 2,
+    borderColor: "#444444"
+  }
+})
+
+export default Index
