@@ -10,6 +10,7 @@ import CircularSlider from '../components/reanimated/CircularSlider';
 // import Worklets from '../components/reanimated/Worklets';
 import SharedElementTransitions from '../components/reanimated/SharedElementTransitions';
 import WithDecay from '../components/reanimated/WithDecay';
+import GestureTest from '../components/reanimated/GestureTest'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -23,6 +24,7 @@ const tabs = [
   // { name: 'Worklets', component: Worklets },
   { name: 'Shared', component: SharedElementTransitions },
   { name: 'Decay', component: WithDecay },
+  { name: 'Gesture', component: GestureTest },
 ];
 
 

@@ -1,16 +1,19 @@
 
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedScrollHandler,
+  interpolateColor,
+  interpolate,
 } from 'react-native-reanimated';
 
 // This component demonstrates how to react to scroll events.
 const ScrollViewEvents = () => {
   // We use a shared value to store the scroll position.
   const scrollY = useSharedValue(0);
+  const w = Dimensions.get('screen').width;
 
   // The scroll handler is an object with an onScroll method.
   // This method is called whenever the user scrolls the ScrollView.
@@ -23,9 +26,19 @@ const ScrollViewEvents = () => {
 
   // The animated style for the box.
   const animatedStyle = useAnimatedStyle(() => {
+    const c = interpolateColor(scrollY.value,
+      [-10, 374],
+      ['#ff0000', '#00ff00'])
+    const pos = {
+      x: interpolate(scrollY.value,
+        [0, 374],
+        [0, w])
+    }
     return {
       // We use the scrollY shared value to move the box up and down.
-      transform: [{ translateY: -scrollY.value }],
+      transform: [{ translateY: -(scrollY.value / 5) },
+      { translateX: pos.x }],
+      backgroundColor: c
     };
   });
 
@@ -64,6 +77,7 @@ const styles = StyleSheet.create({
   },
   content: {
     height: 1000,
+    backgroundColor: 'purple'
   },
   text: {
     textAlign: 'center',

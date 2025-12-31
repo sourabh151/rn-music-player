@@ -4,13 +4,13 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming, Easing } from '
 const Index = () => {
   const a = new Array(5).fill(null)
   const deg = useSharedValue(-10)
-  const anim = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { rotateZ: `${(deg.value)}deg` }
-      ],
-    }
-  })
+  // const anim = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [
+  //       { rotateZ: `${(deg.value)}deg` }
+  //     ],
+  //   }
+  // })
   // const degree = interpolate(deg.value, [0, 1], [-10, 30])
   return (
     <View style={[styles.main]}>
@@ -24,7 +24,7 @@ const Index = () => {
                 transform: [
                   { rotateZ: `${(deg.value * i)}deg` }
                 ],
-              }, anim
+              }
             ]
           }
             onTouchStart={() => {

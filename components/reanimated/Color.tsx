@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 import Animated, {
