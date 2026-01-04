@@ -41,7 +41,7 @@ const WithDecay = () => {
   return (
     <View style={styles.container}>
       <GestureDetector gesture={panGesture}>
-        <Animated.View style={styles.box} />
+        <Animated.View style={[animatedStyle, styles.box]} />
       </GestureDetector>
     </View>
   );

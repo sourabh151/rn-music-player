@@ -17,7 +17,7 @@ const CircularSlider = () => {
       const centerX = SLIDER_WIDTH / 2;
       const centerY = SLIDER_WIDTH / 2;
       const newAngle = Math.atan2(event.y - centerY, event.x - centerX);
-      angle.value = newAngle;
+      angle.value = newAngle + (Math.PI / 2);
     });
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -51,10 +51,11 @@ const styles = StyleSheet.create({
     borderRadius: SLIDER_WIDTH / 2,
     borderWidth: 10,
     borderColor: 'lightgray',
+    backgroundColor: 'gray'
   },
   handleContainer: {
-    width: SLIDER_WIDTH,
-    height: SLIDER_WIDTH,
+    width: '100%',
+    height: '100%',
     position: 'absolute',
     alignItems: 'center',
   },
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'tomato',
     borderRadius: HANDLE_WIDTH / 2,
     top: -HANDLE_WIDTH / 2, // Center the handle on the circle's edge
+    position: 'absolute'
   },
 });
 

@@ -13,6 +13,7 @@ import WithDecay from '../components/reanimated/WithDecay';
 import GestureTest from '../components/reanimated/GestureTest'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import CarouselTest from '@/components/reanimated/CarouselTest';
 
 const tabs = [
   { name: 'Scale', component: Scale },
@@ -25,6 +26,7 @@ const tabs = [
   { name: 'Shared', component: SharedElementTransitions },
   { name: 'Decay', component: WithDecay },
   { name: 'Gesture', component: GestureTest },
+  { name: 'Carousel', component: CarouselTest },
 ];
 
 
