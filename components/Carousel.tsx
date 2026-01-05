@@ -1,6 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import Animated, { interpolate, SharedValue, useAnimatedScrollHandler, useAnimatedStyle } from 'react-native-reanimated';
-import { data } from '@/assets/data/data'
+import { data } from '@/assets/data/data';
+import { useRef } from 'react';
+import { Dimensions, StyleSheet } from 'react-native';
+import Animated, { interpolate, SharedValue, useAnimatedReaction, useAnimatedScrollHandler, useAnimatedStyle } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 type dataType = typeof data[0]
 type carouselProps = {
@@ -17,6 +19,31 @@ const _total = _width + _gap;
 const middle = (Dimensions.get('window').width - _width) / 2
 
 const Carousel = ({ scrollOffset }: carouselProps) => {
+  const flatListRef = useRef<Animated.FlatList<dataType>>(null)
+
+  const scrollToOffset = (offset: number) => {
+    if (flatListRef.current && (offset % 1 === 0)) {
+      flatListRef.current.scrollToOffset({
+        offset: offset * _total,
+        animated: false
+      });
+    }
+
+    // if (flatListRef.current) {
+    //   flatListRef.current.scrollToOffset({
+    //     offset: offset * _total,
+    //     animated: false
+    //   });
+    // }
+  };
+
+  useAnimatedReaction(
+    () => scrollOffset.value,
+    (offset) => {
+      'worklet';
+      scheduleOnRN(scrollToOffset, offset);
+    }
+  );
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
       'worklet';
@@ -26,6 +53,7 @@ const Carousel = ({ scrollOffset }: carouselProps) => {
   })
   return (
     <Animated.FlatList
+      ref={flatListRef}
       data={data}
       renderItem={(info) => <CarouselItem {...info} scrollOffset={scrollOffset} />}
       keyExtractor={(item) => item.name}
