@@ -1,70 +1,75 @@
-import { View, StyleSheet } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withTiming, Easing } from 'react-native-reanimated'
+import { StyleSheet, Pressable } from 'react-native'
+import Animated, { interpolate, SharedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { data } from '@/assets/data/data'
+type CardProps = {
+  key: string,
+  index: number,
+  deg: SharedValue<number>,
+  _total: number,
+  img: any
+}
 
 const Index = () => {
-  const a = new Array(5).fill(null)
-  const deg = useSharedValue(-10)
-  // const anim = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [
-  //       { rotateZ: `${(deg.value)}deg` }
-  //     ],
-  //   }
-  // })
-  // const degree = interpolate(deg.value, [0, 1], [-10, 30])
+  const deg = useSharedValue(0)
   return (
-    <View style={[styles.main]}>
+    <Pressable style={[styles.main]}
+      onPress={() => {
+        deg.value = withTiming(deg.value === 0 ? 1 : 0, {
+          duration: 1000,
+        })
+      }}>
       {
-        a.map((_, i) => {
-          return <Animated.View key={i} style={
-            [
-              styles.card,
-              {
-                zIndex: a.length - i,
-                transform: [
-                  { rotateZ: `${(deg.value * i)}deg` }
-                ],
-              }
-            ]
-          }
-            onTouchStart={() => {
-              // setDegree(-20)
-              deg.value = withTiming(30, {
-                duration: 500,
-                easing: Easing.in(Easing.ease)
-              })
-
-            }}
-            onTouchEnd={() => {
-              // setDegree(-10)
-              deg.value = withTiming(-10, {
-                duration: 500,
-                easing: Easing.in(Easing.ease)
-              })
-            }}
-
-          />
+        data.map((item, i) => {
+          return <Card key={item.name} img={item.img} index={i} deg={deg} _total={data.length} />
         })
       }
-    </View>
+    </Pressable>
   )
+}
+const Card = ({ index, deg, _total, img }: CardProps) => {
+  const animatedStyles = useAnimatedStyle(() => {
+    const rotation = interpolate(deg.value,
+      [0, 1],
+      [(-10 - (_total - index) * 3), (10 + (_total - index) * 3)]);
+
+    const translation = interpolate(deg.value,
+      [0, 1],
+      [5 * (index), 10 * (_total - index)])
+
+    return {
+      transform: [
+        { rotateZ: `${rotation}deg` },
+        { translateX: translation }
+      ]
+    }
+  })
+  return <Animated.Image
+    source={img}
+    resizeMode={'cover'}
+    style={
+      [
+        styles.card, { zIndex: _total - index },
+        animatedStyles
+      ]
+    }
+  />
+
 }
 const styles = StyleSheet.create({
   main: {
-    backgroundColor: "#888888",
+    backgroundColor: "#ef5f1e22",
     justifyContent: "center",
     alignItems: "center",
     height: "100%"
   },
   card: {
-    backgroundColor: "#ffaeae",
     height: 150,
-    aspectRatio: "3/4",
+    width: 100,
     borderRadius: 5,
     position: 'absolute',
     elevation: 3,
-    borderWidth: 2,
-    borderColor: "#444444"
+    borderWidth: 1,
+    borderColor: "#ffffff"
   }
 })
 
