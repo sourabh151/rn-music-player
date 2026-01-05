@@ -1,19 +1,19 @@
 
+import CircularSlider from '@/components/reanimated/CircularSlider';
+import Color from '@/components/reanimated/Color';
+import Drag from '@/components/reanimated/Drag';
+import LayoutAnimations from '@/components/reanimated/LayoutAnimations';
+import Scale from '@/components/reanimated/Scale';
+import ScrollViewEvents from '@/components/reanimated/ScrollViewEvents';
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from 'react-native';
-import Scale from '../components/reanimated/Scale';
-import Drag from '../components/reanimated/Drag';
-import Color from '../components/reanimated/Color';
-import ScrollViewEvents from '../components/reanimated/ScrollViewEvents';
-import LayoutAnimations from '../components/reanimated/LayoutAnimations';
-import CircularSlider from '../components/reanimated/CircularSlider';
-// import Worklets from '../components/reanimated/Worklets';
-import SharedElementTransitions from '../components/reanimated/SharedElementTransitions';
-import WithDecay from '../components/reanimated/WithDecay';
-import GestureTest from '../components/reanimated/GestureTest'
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// import Worklets from '@/components/reanimated/Worklets';
 import CarouselTest from '@/components/reanimated/CarouselTest';
+import GestureTest from '@/components/reanimated/GestureTest';
+import SharedElementTransitions from '@/components/reanimated/SharedElementTransitions';
+import WithDecay from '@/components/reanimated/WithDecay';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const tabs = [
   { name: 'Scale', component: Scale },
