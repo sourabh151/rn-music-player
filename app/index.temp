@@ -1,0 +1,70 @@
+import * as MediaLibrary from 'expo-media-library';
+import { Audio } from 'expo-av';
+import { useEffect, useState } from 'react';
+import { View, Button, FlatList, Text, TouchableOpacity } from 'react-native';
+
+export default function MusicScreen() {
+  const [permission, requestPermission] = MediaLibrary.usePermissions();
+  const [tracks, setTracks] = useState<MediaLibrary.Asset[] | []>([]);
+  const [current, setCurrent] = useState<Audio.Sound | null>(null)
+
+  useEffect(() => {
+    (async () => {
+      if (!permission || permission.status !== 'granted') {
+        const res = await requestPermission();
+        if (res.status !== 'granted') return;
+      }
+      loadAudio();
+    })();
+  }, [permission, requestPermission]);
+
+  const loadAudio = async () => {
+    // first call just to get totalCount
+    let result = await MediaLibrary.getAssetsAsync({
+      mediaType: 'audio',
+      first: 1,
+    }); // Android supports listing audio; iOS is still limited.[web:5]
+
+    if (result.totalCount === 0) return;
+
+    result = await MediaLibrary.getAssetsAsync({
+      mediaType: 'audio',
+      first: result.totalCount, // get all audio files.[web:2][web:4]
+    });
+
+    setTracks(result.assets);
+  };
+
+  const playTrack = async (item: MediaLibrary.Asset) => {
+    if (current) {
+      await current.pauseAsync()
+    }
+    const { sound } = await Audio.Sound.createAsync(
+      { uri: item.uri }, // uri comes from MediaLibrary asset.[web:1][web:12]
+    );
+    setCurrent(sound)
+    await sound.playAsync();
+  };
+  const pauseTrack = async () => {
+    if (current) {
+      await current.pauseAsync()
+    }
+  }
+
+  return (
+    <View style={{ flex: 1, padding: 16 }}>
+      <Button title="Reload music" onPress={loadAudio} />
+      <FlatList
+        data={tracks}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => playTrack(item)}>
+            <Text>{item.filename}</Text>
+          </TouchableOpacity>
+        )}
+      />
+
+      <Button title="Pause music" onPress={pauseTrack} />
+    </View>
+  );
+}

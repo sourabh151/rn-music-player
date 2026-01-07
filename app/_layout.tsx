@@ -1,7 +1,13 @@
-import { Stack } from "expo-router";
+import SafeAreaProviderCustom from '@/components/SafeAreaProviderCustom'
+import { Tabs } from 'expo-router'
+import React from 'react'
 
-export default function RootLayout() {
+const _layout = () => {
   return (
-    <Stack />
-  );
+    <SafeAreaProviderCustom>
+      <Tabs />
+    </SafeAreaProviderCustom>
+  )
 }
+
+export default _layout
